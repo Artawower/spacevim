@@ -8,7 +8,6 @@ function! myspacevim#before() abort
   let g:ayucolor="light"
 
   function! SetPalenightTheme()
-    :echo "Palenight setted" 
     let g:spacevim_custom_color_palette = []
     colorscheme palenight
     let g:spacevim_colorscheme = 'palenight'
@@ -20,7 +19,6 @@ function! myspacevim#before() abort
   nnoremap <F16> :call SetPalenightTheme()<cr>
 
   function! SetLightPapperTheme()
-    :echo "PapperColor setted" 
     let g:spacevim_custom_color_palette = [
         \ ["#eeeeee", "#005faf", 246, 235],
         \ ["#444444", "#afd7ff", 239, 246],
@@ -42,6 +40,14 @@ function! myspacevim#before() abort
 
   nnoremap <F4> :call SetLightPapperTheme()<cr>
 
+  function! SetGruvTheme()
+     let g:spacevim_custom_color_palette = []
+     colorscheme gruvbox
+     :set background=dark
+     highlight Conceal guifg=#fe8019 guibg=NONE
+  endfunction
+
+  nnoremap <F15> :call SetGruvTheme()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
 "      											MAPPING
@@ -100,6 +106,7 @@ function! myspacevim#before() abort
    " Git 
    noremap <Leader>s <Esc> :Gstatus<CR> " Get git status
    noremap <Leader>l <Esc> :Gdiffsplit \| HEAD~1<CR> " Split git info for compare last commit
+
 
 
  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,6 +179,7 @@ function! myspacevim#before() abort
  endfunction
 
  noremap <Leader>[ :call FzfSearchCurrentWord()<cr>
+
  let $FZF_DEFAULT_OPTS    = '--reverse'
  let $FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/**'"
  " let $FZF_DEFAULT_OPTS="--layout=reverse --info=inline"
@@ -199,19 +207,19 @@ function! myspacevim#before() abort
 
  " noremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
 " JS
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:javascript_conceal_noarg_arrow_function = "🞅"
-let g:javascript_conceal_underscore_arrow_function = "🞅"
-let g:javascript_conceal = 1
+" let g:javascript_conceal_function             = "ƒ"
+" let g:javascript_conceal_null                 = "ø"
+" let g:javascript_conceal_this                 = "@"
+" let g:javascript_conceal_return               = "⇚"
+" let g:javascript_conceal_undefined            = "¿"
+" let g:javascript_conceal_NaN                  = "ℕ"
+" let g:javascript_conceal_prototype            = "¶"
+" let g:javascript_conceal_static               = "•"
+" let g:javascript_conceal_super                = "Ω"
+" let g:javascript_conceal_arrow_function       = "⇒"
+" let g:javascript_conceal_noarg_arrow_function = "🞅"
+" let g:javascript_conceal_underscore_arrow_function = "🞅"
+let g:javascript_conceal = 0
 
 let g:yats_host_keyword = 1
  " Python jedo
@@ -249,7 +257,7 @@ let g:yats_host_keyword = 1
  let g:fugitive_bitbucketservers_domains = ['https://bitbucket.org']
 
  " Ident line
- let g:indentLine_setColors = 1 " color for line indent
+ let g:indentLine_setColors = 0 " color for line indent
  let g:indentLine_char = '⎸' " separate simbol
 
  " Ultisnipets
@@ -333,19 +341,22 @@ function! myspacevim#after() abort
    call matchadd('Conceal', '()\ze => ', 10, -1, {'conceal': '⨍'})
    call matchadd('Conceal', 'return', 10, -1, {'conceal': "⏎"})
    call matchadd('Conceal', 'return\ze;', 10, -1, {'conceal': "⏎';"})
+   call matchadd('Conceal', 'Object\ze.', 10, -1, {'conceal': '𝚯'})
+
+   set conceallevel=1
+
+   function! HighlightConceal()
+      set conceallevel=1
+      " highlight Conceal guifg=#c792ea guibg=NONE
+   endfunction
+
    augroup conceal
       autocmd!
       autocmd InsertEnter * :set conceallevel=0
-      autocmd InsertLeave * :set conceallevel=1
-      autocmd-verbose * :set conceallevel=0
+      autocmd InsertLeave * :call HighlightConceal()
+      autocmd bufenter * :call HighlightConceal()
+      autocmd BufEnter *.vue :set norelativenumber
    augroup END
 
-   set conceallevel=0
-   function! HighlightConceal()
-      :echo "Conceal highlighted" 
-      set conceallevel=1
-      highlight Conceal guifg=#c792ea guibg=NONE
-   endfunction
 
-   autocmd bufenter * :call HighlightConceal()
 endfunction
