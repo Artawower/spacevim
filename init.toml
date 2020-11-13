@@ -272,3 +272,7 @@
 [[custom_plugins]]
     repo = 'kyoz/purify'
     merged = false
+
+[[custom_plugins]]
+    repo = 'xolox/vim-notes'
+    merged = false

@@ -95,7 +95,6 @@ function! myspacevim#before() abort
    
    noremap <F20> :PrevColorScheme<CR>
    noremap <F21> :RandomColorScheme<CR>
-   
 
    " " Go debug, enable if use instead vimspecotr
    " autocmd FileType go          nnoremap <buffer> <F5> :GoDebugStart<CR>
@@ -108,6 +107,11 @@ function! myspacevim#before() abort
    noremap <Leader>l <Esc> :Gdiffsplit \| HEAD~1<CR> " Split git info for compare last commit
 
 
+   " Quickfix navigation
+   noremap <Leader>o :.cc<CR>
+
+   " Notes
+   noremap <Leader>n :SearchNotes 
 
  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
  " 
@@ -301,6 +305,29 @@ let g:yats_host_keyword = 1
  nmap <C-m> <Plug>MarkdownPreview
  nmap <M-s> <Plug>MarkdownPreviewStop
  nmap <C-t> <Plug>MarkdownPreviewToggle
+
+ 
+ """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ " 
+ "      								   FUNCTIONS
+ "
+ """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ function! JsonToType()
+    let extension = expand('%:e')
+    echom extension
+    :%!quicktype -l golang<CR>
+ endfunction
+
+noremap <Leader>c :call JsonToType()
+ 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 
+"      								        NOTES
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+:let g:notes_directories = ['/Users/arturarosenko/Yandex.Disk.localized/notes']
+:let g:notes_suffix = '.md'
 
  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
  " 
